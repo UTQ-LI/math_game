@@ -1,5 +1,4 @@
-import random
-import time
+import random, time, platform, os
 from generate_problem import Generate_Problem
 from control_problem import Control_Problem
 from score import UserScore
@@ -9,6 +8,15 @@ generate_problem = Generate_Problem()
 control_problem = Control_Problem()
 
 class Main:
+    def clearConsole(self, platform):
+        if platform == "Windows":
+            os.system("cls")
+        elif platform == "Linux" or platform == "Linux2" or platform == "Darwin":
+            os.system("clear")
+        else:
+            print("[!] Bilinmeyen bir işletim sistemi!")
+            exit()
+
     def addUser(self, user):
         UserScore.AddUser(user)
 
@@ -30,11 +38,15 @@ class Main:
             user_input = input("Cevabınız: ")
 
             if user_input in ["exit", "quit", "e", "q"]:
+                Main.clearConsole(platform)
                 print("Çıkış yapılıyor...")
+                time.sleep(1)
                 exit()
 
             elif user_input in ["list_score", "score", "skor", "skoru listele", "list skor", "list score"]:
+                Main.clearConsole(platform)
                 print(UserScore.UserScoreLists())
+                time.sleep(2)
                 break
 
             else:
@@ -49,6 +61,10 @@ class Main:
 
 Main = Main()
 
+
+platform = platform.system()
+
+Main.clearConsole(platform)
 print("Matematik Oyununa Hoşgeldiniz!")
 time.sleep(1)
 while True:
@@ -59,13 +75,17 @@ while True:
         if username == "iptal":
             print("İptal edildi!")
         else:
+            Main.clearConsole(platform)
             Main.addUser(username)
 
     elif option == 2:
         for i in range(3, 0, -1):
             print(i)
             time.sleep(1)
+        Main.clearConsole(platform)
         print("Oyun Başlıyor!")
+        Main.clearConsole(platform)
+        time.sleep(1)
         while True:
             Main.start_game()
     else:
