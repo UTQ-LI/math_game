@@ -1,6 +1,7 @@
 class Control_Problem:
     def control_equation(self, user_answer, question):
         global cozum
+        global cozum_
         parcalar = question.split()
         katsayi = int(parcalar[0].replace("x", ""))
         isaret = parcalar[1]
@@ -9,23 +10,27 @@ class Control_Problem:
 
         if isaret == "+":
             cozum = (sonuc - sabit) / katsayi
+            cozum_ = round(cozum, 2)
         elif isaret == "-":
             cozum = (sonuc + sabit) / katsayi
+            cozum_ = round(cozum, 2)
         elif isaret == "*":
             if katsayi != 0 and sabit != 0:
                 cozum = sonuc / (katsayi * sabit)
+                cozum_ = round(cozum, 2)
             else:
                 return False
         elif isaret == "/":
             if sabit != 0:
                 cozum = sonuc * (katsayi / sabit)
+                cozum_ = round(cozum, 2)
             else:
                 return False
 
-        if user_answer == cozum:
+        if user_answer == cozum or user_answer == cozum_:
             return True
         else:
-            print(f"Doğru cevap: {cozum}")
+            print(f"Doğru cevap: {cozum_}")
             return False
 
     def control_problem(self, user_answer, random_problem_question):

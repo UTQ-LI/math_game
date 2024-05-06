@@ -1,8 +1,10 @@
 import random, time, platform, os
 from generate_problem import Generate_Problem
 from control_problem import Control_Problem
+from log import Log
 from score import UserScore
 
+Log = Log()
 UserScore = UserScore()
 generate_problem = Generate_Problem()
 control_problem = Control_Problem()
@@ -33,6 +35,7 @@ class Main:
 
             print(f"{user} sorusu")
             time.sleep(1)
+
             print(f"Soru: {question}")
 
             user_input = input("Cevabınız: ")
@@ -51,45 +54,56 @@ class Main:
 
             else:
                 user_input = float(user_input)
+                if question_type == 3:
+                    pass
                 controlProblem = control_problem.control(user_input, question, question_type)
                 if controlProblem:
                     print(f"{user} doğru cevap verdi!")
                     UserScore.AddScoreUser(user, 1)
+                    Log.addLog(user, question, user_input, controlProblem)
                 else:
                     print(f"{user} yanlış cevap verdi!")
                     UserScore.DeleteScoreUser(user, 1)
+                    Log.addLog(user, question, user_input, controlProblem)
 
-Main = Main()
+try:
+    Main = Main()
 
+    platform = platform.system()
 
-platform = platform.system()
+    Main.clearConsole(platform)
+    print("Matematik Oyununa Hoşgeldiniz!")
+    time.sleep(1)
+    while True:
+        option = int(input("1: Kullanıcı ekle\n 2: Oyuna başla\nBir seçenek seçin: "))
 
-Main.clearConsole(platform)
-print("Matematik Oyununa Hoşgeldiniz!")
-time.sleep(1)
-while True:
-    option = int(input("1: Kullanıcı ekle\n 2: Oyuna başla\nBir seçenek seçin: "))
+        if option == 1:
+            username = input("Lütfen eklenecek ismi giriniz (iptal için 'iptal' yazmanız yeterli!): ")
+            if username == "iptal":
+                print("İptal edildi!")
+            else:
+                Main.clearConsole(platform)
+                Main.addUser(username)
 
-    if option == 1:
-        username = input("Lütfen eklenecek ismi giriniz (iptal için 'iptal' yazmanız yeterli!): ")
-        if username == "iptal":
-            print("İptal edildi!")
-        else:
+        elif option == 2:
             Main.clearConsole(platform)
-            Main.addUser(username)
+            for i in range(3, 0, -1):
+                print(i)
+                time.sleep(1)
 
-    elif option == 2:
-        for i in range(3, 0, -1):
-            print(i)
+            Main.clearConsole(platform)
+
+            print("Oyun Başlıyor!")
+            Main.clearConsole(platform)
             time.sleep(1)
-        Main.clearConsole(platform)
-        print("Oyun Başlıyor!")
-        Main.clearConsole(platform)
-        time.sleep(1)
-        while True:
-            Main.start_game()
-    else:
-        print("Geçersiz seçenek seçtiniz!")
-        exit()
 
-# kullanıcıların skorları kaybolmaması için bir text dosyayı ayarlanacak
+            while True:
+                Main.start_game()
+        else:
+            print("Geçersiz seçenek seçtiniz!")
+            exit()
+
+except ValueError:
+    print("Lütfen bir sayı girin (örn: 1)")
+except Exception as e:
+    print(f"Error: {e}")
