@@ -16,7 +16,7 @@ class Main:
         elif platform == "Linux" or platform == "Linux2" or platform == "Darwin":
             os.system("clear")
         else:
-            print("[!] Bilinmeyen bir işletim sistemi!")
+            print("[!] Bilinmeyen işletim sistemi!")
             exit()
 
     def addUser(self, user):
